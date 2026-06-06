@@ -22,6 +22,7 @@ import Ledger from "./pages/Ledger";
 import Profile from "./pages/Profile";
 import Complaints from "./pages/Complaints";
 import PublicInvoice from "./pages/PublicInvoice";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/ledger" element={<Ledger />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/complaints" element={<Complaints />} />
             </Route>
             <Route path="*" element={<NotFound />} />
