@@ -38,6 +38,18 @@ export default {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
+        edited: {
+          DEFAULT: "hsl(var(--edited))",
+          foreground: "hsl(var(--edited-foreground))",
+        },
+        deleted: {
+          DEFAULT: "hsl(var(--deleted))",
+          foreground: "hsl(var(--deleted-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

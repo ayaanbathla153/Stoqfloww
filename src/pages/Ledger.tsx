@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Plus, Wallet, ArrowDownRight, ArrowUpRight, TrendingUp, TrendingDown, Users, ChevronRight, ArrowLeft, FileText, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { StatusBadge } from "./supplier/SupplierDashboard";
+import { StatusBadge } from "@/components/SemanticBadge";
 
 type Entry = {
   id: string;

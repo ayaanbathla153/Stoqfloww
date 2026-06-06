@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, ClipboardList, AlertTriangle, IndianRupee, Plus, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/SemanticBadge";
 
 interface Stats {
   retailers: number;
@@ -101,17 +102,17 @@ export default function SupplierDashboard() {
 
       {stats.needsVerification > 0 && (
         <Link to="/retailers">
-          <Card className="p-4 bg-primary/10 border-primary/40 flex items-center justify-between hover:border-primary transition-smooth">
+          <Card className="p-4 bg-warning/10 border-warning/40 flex items-center justify-between hover:border-warning transition-smooth">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/20 grid place-items-center">
-                <Package className="w-5 h-5 text-primary" />
+              <div className="w-10 h-10 rounded-lg bg-warning/20 grid place-items-center">
+                <Package className="w-5 h-5 text-warning" />
               </div>
               <div>
                 <div className="font-semibold text-sm">{stats.needsVerification} retailer{stats.needsVerification > 1 ? "s" : ""} need stock verification</div>
                 <div className="text-xs text-muted-foreground">Last visit &gt; 20 days ago</div>
               </div>
             </div>
-            <Badge variant="outline" className="border-primary/50 text-primary">Visit</Badge>
+            <Badge variant="outline" className="border-warning/50 text-warning">Visit</Badge>
           </Card>
         </Link>
       )}
@@ -204,18 +205,4 @@ function StatCard({ icon, label, value, accent, link }: { icon: React.ReactNode;
   return link ? <Link to={link}>{inner}</Link> : inner;
 }
 
-export function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; cls: string }> = {
-    pending: { label: "Pending confirm", cls: "bg-warning/15 text-warning border-warning/30" },
-    confirmed: { label: "Confirmed", cls: "bg-primary/15 text-primary border-primary/30" },
-    approved: { label: "Approved", cls: "bg-success/15 text-success border-success/30" },
-    modified: { label: "Modified", cls: "bg-primary/15 text-primary border-primary/30" },
-    rejected: { label: "Rejected", cls: "bg-destructive/15 text-destructive border-destructive/30" },
-    invoiced: { label: "Invoiced", cls: "bg-accent text-foreground border-border" },
-    pending_delivery: { label: "Awaiting delivery", cls: "bg-warning/15 text-warning border-warning/30" },
-    delivered: { label: "Delivered", cls: "bg-success/15 text-success border-success/30" },
-    disputed: { label: "Disputed", cls: "bg-destructive/15 text-destructive border-destructive/30" },
-  };
-  const s = map[status] ?? { label: status, cls: "bg-muted text-muted-foreground border-border" };
-  return <span className={`text-[10px] px-2 py-1 rounded-full border font-medium uppercase tracking-wider ${s.cls}`}>{s.label}</span>;
-}
+export { StatusBadge } from "@/components/SemanticBadge";

@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, AlertCircle, Image as ImgIcon, Mic, Square, CheckCircle2, Loader2, Paperclip, RotateCcw } from "lucide-react";
+import { SemanticBadge } from "@/components/SemanticBadge";
 import { toast } from "sonner";
 
 export default function Complaints() {
@@ -307,13 +308,13 @@ export default function Complaints() {
       ) : (
         <div className="space-y-2">
           {items.map((c) => (
-            <Card key={c.id} className={`p-3 space-y-2 ${c.status === "open" ? "border-warning/40" : ""}`}>
+            <Card key={c.id} className={`p-3 space-y-2 ${c.status === "open" ? (c.type === "return" ? "border-warning/40" : "border-destructive/40") : ""}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium uppercase ${c.type === "return" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}>
+                    <SemanticBadge tone={c.type === "return" ? "warning" : "error"}>
                       {c.type === "return" ? "Return" : "Complaint"}
-                    </span>
+                    </SemanticBadge>
                   </div>
                   <div className="text-sm font-medium">{c.description}</div>
                   <div className="text-xs text-muted-foreground">
@@ -322,9 +323,9 @@ export default function Complaints() {
                     {new Date(c.created_at).toLocaleString()}
                   </div>
                 </div>
-                <span className={`text-[10px] px-2 py-1 rounded-full border font-medium uppercase tracking-wider ${c.status === "open" ? "bg-warning/15 text-warning border-warning/30" : "bg-success/15 text-success border-success/30"}`}>
+                <SemanticBadge tone={c.status === "open" ? (c.type === "return" ? "warning" : "error") : c.status === "resolved" ? "success" : "neutral"}>
                   {c.status}
-                </span>
+                </SemanticBadge>
               </div>
               {c.media_url && <MediaPreview url={c.media_url} />}
               {role === "supplier" && c.status === "open" && (

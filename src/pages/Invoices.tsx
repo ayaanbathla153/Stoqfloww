@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Truck, FileText, MessageCircle, Loader2, PackageCheck } from "lucide-react";
-import { StatusBadge } from "./supplier/SupplierDashboard";
+import { StatusBadge, SemanticBadge } from "@/components/SemanticBadge";
 import { toast } from "sonner";
 import { waLink } from "@/lib/phone";
 
@@ -221,9 +221,9 @@ export default function Invoices() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold truncate">{inv.invoice_number}</span>
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium uppercase ${inv.kind === "proforma" ? "bg-warning/15 text-warning" : "bg-success/15 text-success"}`}>
+                    <SemanticBadge tone={inv.kind === "proforma" ? "warning" : "success"}>
                       {inv.kind === "proforma" ? "Proforma" : "Final"}
-                    </span>
+                    </SemanticBadge>
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {role === "supplier" ? inv.retailer?.shop_name || inv.retailer?.name : inv.supplier?.shop_name || inv.supplier?.name}
@@ -262,7 +262,7 @@ export default function Invoices() {
                 {role === "retailer" && inv.status === "pending_delivery" && (
                   <>
                     <Button size="sm" variant="success" onClick={() => accept(inv)}>Accept</Button>
-                    <Button size="sm" variant="destructive" onClick={() => dispute(inv)}>Dispute</Button>
+                    <Button size="sm" variant="destructive-outline" onClick={() => dispute(inv)}>Dispute</Button>
                   </>
                 )}
               </div>

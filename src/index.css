@@ -37,6 +37,15 @@
     --warning: 38 100% 55%;
     --warning-foreground: 240 10% 6%;
 
+    --info: 212 95% 62%;
+    --info-foreground: 0 0% 98%;
+
+    --edited: 212 95% 62%;
+    --edited-foreground: 0 0% 98%;
+
+    --deleted: 240 5% 45%;
+    --deleted-foreground: 240 5% 75%;
+
     --border: 240 6% 18%;
     --input: 240 6% 16%;
     --ring: 28 100% 58%;
@@ -90,4 +99,6 @@
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
   .transition-smooth { transition: var(--transition-smooth); }
+  .deleted-row { opacity: 0.55; filter: grayscale(0.4); }
+  .deleted-row .deleted-title { text-decoration: line-through; color: hsl(var(--muted-foreground)); }
 }
