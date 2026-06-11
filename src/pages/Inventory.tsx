@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card } from "@/components/ui/card";
@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { ConfidenceDot, LastVerified } from "@/components/ConfidenceDot";
 import { refillHint } from "@/lib/stock-intel";
 import { toast } from "sonner";
+import { ChevronRight } from "lucide-react";
 
 const emptyForm = { name: "", category: "", unit: "pcs", price: "", supplier_stock: "", low_stock_threshold: "10" };
 
@@ -87,7 +88,29 @@ function SupplierInventory() {
     setOpen(false);
     void load();
   };
+const retailerGroups = useMemo(() => {
+  const map = new Map();
 
+  retailerStocks.forEach((r) => {
+    const retailerId = r.retailer_id;
+
+    if (!map.has(retailerId)) {
+      map.set(retailerId, {
+        retailerId,
+        retailerName:
+          r.profiles?.shop_name ||
+          r.profiles?.name ||
+          "Retailer",
+        lastVerified: r.last_verified_at,
+        items: [],
+      });
+    }
+
+    map.get(retailerId).items.push(r);
+  });
+
+  return Array.from(map.values());
+}, [retailerStocks]);
   return (
     <div className="p-4 space-y-4 animate-fade-in">
       <div className="flex items-center justify-between">
@@ -153,28 +176,26 @@ function SupplierInventory() {
         <TabsContent value="retailer" className="space-y-2 mt-3">
           <p className="text-[11px] text-muted-foreground -mt-1">Estimated values, updated by deliveries, returns &amp; supplier visits.</p>
           {retailerStocks.length === 0 && <Card className="p-8 text-center text-muted-foreground text-sm"><Boxes className="w-8 h-8 mx-auto mb-2 opacity-50" />No retailer stock yet</Card>}
-          {retailerStocks.map((r) => {
-            const hint = refillHint({ stock_quantity: r.stock_quantity, avg_daily_sales: r.avg_daily_sales, last_verified_at: r.last_verified_at });
-            return (
-              <Link key={r.id} to={`/retailers/${r.retailer_id}/verify`}>
-                <Card className="p-3 flex items-center justify-between hover:border-primary/40 transition-smooth">
-                  <div className="min-w-0">
-                    <div className="font-medium text-sm flex items-center gap-1.5">
-                      <ConfidenceDot row={r} /> {r.products?.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {r.profiles?.shop_name || r.profiles?.name} · <LastVerified at={r.last_verified_at} />
-                    </div>
-                    {hint && <div className="text-[10px] mt-0.5 text-warning">{hint}</div>}
-                  </div>
-                  <div className="text-right shrink-0">
-                    <div className="font-bold">~{r.stock_quantity}</div>
-                    <div className="text-[10px] text-muted-foreground">{r.products?.unit} est.</div>
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
+          {retailerGroups.map((retailer) => (
+  <Card
+    key={retailer.retailerId}
+    className="p-4 cursor-pointer hover:border-primary/40 transition"
+  >
+    <div className="flex items-center justify-between">
+      <div>
+        <div className="font-semibold">
+          {retailer.retailerName}
+        </div>
+
+        <div className="text-sm text-muted-foreground">
+          {retailer.items.length} products
+        </div>
+      </div>
+
+      <ChevronRight className="w-5 h-5" />
+    </div>
+  </Card>
+))}
         </TabsContent>
       </Tabs>
     </div>
